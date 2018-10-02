@@ -1,0 +1,25 @@
+{
+  "name": "blockchain_project_4",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "nodemon index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": ""
+  },
+  "author": "LDM",
+  "license": "ISC",
+  "dependencies": {
+    "address": "^1.0.3",
+    "bitcoinjs-message": "^2.0.0",
+    "compression": "^1.7.3",
+    "crypto-js": "^3.1.9-1",
+    "express": "^4.16.3",
+    "level": "^4.0.0",
+    "nodemon": "^1.18.4"
+  }
+}
