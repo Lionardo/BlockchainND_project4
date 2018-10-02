@@ -9,9 +9,9 @@
   },
   "repository": {
     "type": "git",
-    "url": ""
+    "url": "https://github.com/Lionardo/BlockchainND_project4.git"
   },
-  "author": "LDM",
+  "author": "Lio",
   "license": "ISC",
   "dependencies": {
     "address": "^1.0.3",
