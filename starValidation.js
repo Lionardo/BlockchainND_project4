@@ -1,6 +1,6 @@
 const db = require('level')('./data/star')
 const bitcoinMessage = require('bitcoinjs-message')
-
+const moment = require('moment');
 class StarValidation {
   constructor (req) {
     this.req = req
@@ -110,7 +110,7 @@ class StarValidation {
   saveNewRequestValidation(address) {
     const timestamp = Math.floor(Date.now()/1000)
     const message = `${address}:${timestamp}:starRegistry`
-    const validationWindow = 300
+    const validationWindow = global.nowSubFiveMinutes.humanize(true);
     const data = {
       address: address,
       message: message,
@@ -118,10 +118,12 @@ class StarValidation {
       validationWindow: validationWindow
     }
     db.put(data.address, JSON.stringify(data))
+    global.nowSubFiveMinutes = null;
     return data
   }
 
   async getPendingAddressRequest(address) {
+    global.nowSubFiveMinutes = moment.duration(300, 'seconds');
     return new Promise((resolve, reject) => {
       db.get(address, (error, value) => {
         if (value === undefined) {
@@ -131,10 +133,9 @@ class StarValidation {
         }
 
         value = JSON.parse(value)
-        var d = new Date();
-        const nowSubFiveMinutes = d.setMinutes(5);
+        const nowSubFiveMinutes = Math.floor(Date.now()/1000) - (5 * 60)
         const isExpired = value.requestTimeStamp < nowSubFiveMinutes
-
+        
         if (isExpired) {
             resolve(this.saveNewRequestValidation(address))
         } else {
@@ -144,6 +145,7 @@ class StarValidation {
             requestTimeStamp: value.requestTimeStamp,
             validationWindow: value.requestTimeStamp - nowSubFiveMinutes
           }
+          
           resolve(data)
         }
       })

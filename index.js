@@ -13,47 +13,8 @@ router.listen(8000, () => console.log('listening port: 8000'))
 router.use(bodyParser.json())
 router.get('/', (req, res) => res.status(404).json({ 
   "status": 404,
-  "message": "Please check endpoints" 
+  "message": "Please check entered endpoints" 
 }))
-
-validateAddressParameter = async (req, res, next) => {
-  try {
-    const starValidation = new StarValidation(req)
-    starValidation.validateAddressParameter()
-    next()
-  } catch (error) {
-    res.status(400).json({
-      status: 400,
-      message: error
-    })
-  }
-}
-
-validateSignatureParameter = async (req, res, next) => {
-  try {
-    const starValidation = new StarValidation(req)
-    starValidation.validateSignatureParameter()
-    next()
-  } catch (error) {
-    res.status(400).json({
-      status: 400,
-      message: error
-    })
-  }
-}
-
-validateNewStarRequest = async (req, res, next) => {
-  try {
-    const starValidation = new StarValidation(req)
-    starValidation.validateNewStarRequest()
-    next()
-  } catch (error) {
-    res.status(400).json({
-      status: 400,
-      message: error
-    })
-  }
-}
 
 
 router.post('/requestValidation', async (req, res) => {
@@ -146,6 +107,7 @@ router.post('/block', async (req, res) => {
       if (!isValid) {
         throw 'Signature is not valid'
       }
+      starValidation.validateNewStarRequest();
     } catch (error) {
       res.status(401).json({
         status: 401,
